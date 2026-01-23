@@ -1829,7 +1829,7 @@ constexpr void xy_fused_transpose_part_dispatch(const density_bag_t d, const ind
 												y_func_scalar_t&& y_forward_s)
 {
 	HWY_LANES_CONSTEXPR index_t max_length = hn::Lanes(hn::ScalableTag<real_t> {});
-	HWY_LANES_CONSTEXPR index_t simd_length = std::min(16, max_length);
+	HWY_LANES_CONSTEXPR index_t simd_length = sizeof(real_t) == 8 ? std::min(8, max_length) : std::min(16, max_length);
 
 	if (simd_length == 2)
 	{
