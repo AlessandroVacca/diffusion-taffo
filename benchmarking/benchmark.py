@@ -372,6 +372,8 @@ class Benchmarking:
             alg = group["runs"][run_name]["alg"]
 
             for param_name in os.listdir(run_dir):
+                if not os.path.isdir(os.path.join(run_dir, param_name)):
+                    continue
                 params_path = os.path.join(
                     group_dir, run_name, param_name, "params.json")
 

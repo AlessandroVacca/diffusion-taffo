@@ -28,15 +28,25 @@
                 "warmup_time": 1
             },
             "runs": {
-                "baseline": {
-                    "alg": "lstc"
+                "biofvms": {
+                    "alg": "lstcss",
+                    "params": {
+                        "empty": [1]
+                    }
+                },                
+                "baselines": {
+                    "alg": "lstcs",
+                    "params": {
+                        "empty": [1]
+                    }
                 },
-                "temporal": {
-                    "alg": "lstcta",
+                "temporals": {
+                    "alg": "lstcsta",
                     "params": {
                         "xs_tile_size": [
                             16, 32, 48, 64, 10000
-                        ]
+                        ],
+                        "substrate_step": [1]
                     }
                 },
                 "transpose-temporal": {
@@ -83,15 +93,25 @@
                 "warmup_time": 1
             },
             "runs": {
-                "baseline": {
-                    "alg": "lstc"
+                "biofvms": {
+                    "alg": "lstcss",
+                    "params": {
+                        "empty": [1]
+                    }
+                },                
+                "baselines": {
+                    "alg": "lstcs",
+                    "params": {
+                        "empty": [1]
+                    }
                 },
-                "temporal": {
-                    "alg": "lstcta",
+                "temporals": {
+                    "alg": "lstcsta",
                     "params": {
                         "xs_tile_size": [
                             16, 32, 48, 64, 10000
-                        ]
+                        ],
+                        "substrate_step": [1]
                     }
                 },
                 "transpose-temporal": {
@@ -138,15 +158,25 @@
                 "warmup_time": 1
             },
             "runs": {
-                "baseline": {
-                    "alg": "lstc"
+                "biofvms": {
+                    "alg": "lstcss",
+                    "params": {
+                        "empty": [1]
+                    }
+                },                
+                "baselines": {
+                    "alg": "lstcs",
+                    "params": {
+                        "empty": [1]
+                    }
                 },
-                "temporal": {
-                    "alg": "lstcta",
+                "temporals": {
+                    "alg": "lstcsta",
                     "params": {
                         "xs_tile_size": [
                             16, 32, 48, 64, 10000
-                        ]
+                        ],
+                        "substrate_step": [1, 2]
                     }
                 },
                 "transpose-temporal": {
@@ -193,15 +223,25 @@
                 "warmup_time": 1
             },
             "runs": {
-                "baseline": {
-                    "alg": "lstc"
+                "biofvms": {
+                    "alg": "lstcss",
+                    "params": {
+                        "empty": [1]
+                    }
+                },                
+                "baselines": {
+                    "alg": "lstcs",
+                    "params": {
+                        "empty": [1]
+                    }
                 },
-                "temporal": {
-                    "alg": "lstcta",
+                "temporals": {
+                    "alg": "lstcsta",
                     "params": {
                         "xs_tile_size": [
                             16, 32, 48, 64, 10000
-                        ]
+                        ],
+                        "substrate_step": [1, 2]
                     }
                 },
                 "transpose-temporal": {
@@ -248,15 +288,25 @@
                 "warmup_time": 1
             },
             "runs": {
-                "baseline": {
-                    "alg": "lstc"
+                "biofvms": {
+                    "alg": "lstcss",
+                    "params": {
+                        "empty": [1]
+                    }
+                },                
+                "baselines": {
+                    "alg": "lstcs",
+                    "params": {
+                        "empty": [1]
+                    }
                 },
-                "temporal": {
-                    "alg": "lstcta",
+                "temporals": {
+                    "alg": "lstcsta",
                     "params": {
                         "xs_tile_size": [
                             16, 32, 48, 64, 10000
-                        ]
+                        ],
+                        "substrate_step": [1, 2, 4]
                     }
                 },
                 "transpose-temporal": {
@@ -303,15 +353,25 @@
                 "warmup_time": 1
             },
             "runs": {
-                "baseline": {
-                    "alg": "lstc"
+                "biofvms": {
+                    "alg": "lstcss",
+                    "params": {
+                        "empty": [1]
+                    }
+                },                
+                "baselines": {
+                    "alg": "lstcs",
+                    "params": {
+                        "empty": [1]
+                    }
                 },
-                "temporal": {
-                    "alg": "lstcta",
+                "temporals": {
+                    "alg": "lstcsta",
                     "params": {
                         "xs_tile_size": [
                             16, 32, 48, 64, 10000
-                        ]
+                        ],
+                        "substrate_step": [1, 2, 4]
                     }
                 },
                 "transpose-temporal": {
@@ -358,15 +418,25 @@
                 "warmup_time": 1
             },
             "runs": {
-                "baseline": {
-                    "alg": "lstc"
+                "biofvms": {
+                    "alg": "lstcss",
+                    "params": {
+                        "empty": [1]
+                    }
+                },                
+                "baselines": {
+                    "alg": "lstcs",
+                    "params": {
+                        "empty": [1]
+                    }
                 },
-                "temporal": {
-                    "alg": "lstcta",
+                "temporals": {
+                    "alg": "lstcsta",
                     "params": {
                         "xs_tile_size": [
                             16, 32, 48, 64, 10000
-                        ]
+                        ],
+                        "substrate_step": [1, 2, 4, 8]
                     }
                 },
                 "transpose-temporal": {
@@ -413,15 +483,25 @@
                 "warmup_time": 1
             },
             "runs": {
-                "baseline": {
-                    "alg": "lstc"
+                "biofvms": {
+                    "alg": "lstcss",
+                    "params": {
+                        "empty": [1]
+                    }
+                },                
+                "baselines": {
+                    "alg": "lstcs",
+                    "params": {
+                        "empty": [1]
+                    }
                 },
-                "temporal": {
-                    "alg": "lstcta",
+                "temporals": {
+                    "alg": "lstcsta",
                     "params": {
                         "xs_tile_size": [
                             16, 32, 48, 64, 10000
-                        ]
+                        ],
+                        "substrate_step": [1, 2, 4, 8]
                     }
                 },
                 "transpose-temporal": {
