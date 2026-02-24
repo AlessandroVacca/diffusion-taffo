@@ -43,7 +43,7 @@
                 "temporals": {
                     "alg": "lstcsta",
                     "params": {
-                        "xs_tile_size": [
+                        "x_tile_size": [
                             16, 32, 48, 64, 10000
                         ],
                         "substrate_step": [1]
@@ -108,7 +108,7 @@
                 "temporals": {
                     "alg": "lstcsta",
                     "params": {
-                        "xs_tile_size": [
+                        "x_tile_size": [
                             16, 32, 48, 64, 10000
                         ],
                         "substrate_step": [1]
@@ -173,7 +173,7 @@
                 "temporals": {
                     "alg": "lstcsta",
                     "params": {
-                        "xs_tile_size": [
+                        "x_tile_size": [
                             16, 32, 48, 64, 10000
                         ],
                         "substrate_step": [1, 2]
@@ -238,7 +238,7 @@
                 "temporals": {
                     "alg": "lstcsta",
                     "params": {
-                        "xs_tile_size": [
+                        "x_tile_size": [
                             16, 32, 48, 64, 10000
                         ],
                         "substrate_step": [1, 2]
@@ -303,7 +303,7 @@
                 "temporals": {
                     "alg": "lstcsta",
                     "params": {
-                        "xs_tile_size": [
+                        "x_tile_size": [
                             16, 32, 48, 64, 10000
                         ],
                         "substrate_step": [1, 2, 4]
@@ -368,7 +368,7 @@
                 "temporals": {
                     "alg": "lstcsta",
                     "params": {
-                        "xs_tile_size": [
+                        "x_tile_size": [
                             16, 32, 48, 64, 10000
                         ],
                         "substrate_step": [1, 2, 4]
@@ -433,7 +433,7 @@
                 "temporals": {
                     "alg": "lstcsta",
                     "params": {
-                        "xs_tile_size": [
+                        "x_tile_size": [
                             16, 32, 48, 64, 10000
                         ],
                         "substrate_step": [1, 2, 4, 8]
@@ -498,7 +498,7 @@
                 "temporals": {
                     "alg": "lstcsta",
                     "params": {
-                        "xs_tile_size": [
+                        "x_tile_size": [
                             16, 32, 48, 64, 10000
                         ],
                         "substrate_step": [1, 2, 4, 8]
