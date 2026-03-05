@@ -7,4 +7,4 @@
 sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 # Install plotting R dependencies
-sudo R -e "install.packages(c('ggplot2', 'cowplot', 'sitools', 'viridis', 'dplyr'), repos='https://cloud.r-project.org')"
+sudo R -e "install.packages(c('ggplot2', 'cowplot', 'sitools', 'viridis', 'dplyr', 'tidyr'), repos='https://cloud.r-project.org')"
