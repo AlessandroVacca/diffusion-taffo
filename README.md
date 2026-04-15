@@ -1,9 +1,7 @@
-# `PhysiBoSS diffusion-benchmarking` TAFFO compiler experiments
-
-This report documents the application of [TAFFO](https://github.com/TAFFO-org/TAFFO) to the
-`lstc` (Least Compute Thomas) diffusion solver in this [repository](https://github.com/DARE-PhysiBoSS/diffusion-benchmarking). The goal was to measure
+# Port of diffusion-benchmarking to fixed point math
+This repo is the port of the `lstc` (Least Compute Thomas) diffusion solver in this [repository](https://github.com/DARE-PhysiBoSS/diffusion-benchmarking) to fixed point math, by using [TAFFO](https://github.com/TAFFO-org/TAFFO). The goal was to measure
 the performance and accuracy tradeoff of replacing double-precision arithmetic with reduced-precision
-fixed-point arithmetic in the innermost numerical kernel.
+fixed-point arithmetic in the various numerical kernel of the solver.
 
 The baseline for all comparisons is the original `lstc` solver compiled with GCC,
 `-march=native`, and `--double` (double precision). The annotated version (`diffuse-taffo`)
@@ -69,8 +67,6 @@ taffo_x_slice_v11(dens, bx, cx, ex, ns, nx, M, yz);
 taffo_y_row_3d_v11(dens, by, cy, ey, ns, nx, ny, nz, z, x);
 taffo_z_row_v11(dens, bz, cz, ez, ns, nx, ny, nz, y, x);
 ```
-
----
 
 ## The Annotated Kernel (`taffo_kernels_v11.cpp`)
 
@@ -183,10 +179,6 @@ rates. Float32 grows nearly linearly (N^0.945); TAFFO grows sub-linearly (N^0.85
 ~10× smaller coefficient. TAFFO becomes more accurate than float32 from around N ≈ 5
 iterations onward.
 
-The non-monotonic TAFFO behaviour at small N (RMSE dips at N=10 relative to N=5) reflects
-rounding errors that alternate sign as density decays, producing partial cancellation at
-certain iteration counts.
-
 ### Grid-size accuracy (50³ / 100³ / 200³, multi-iteration)
 
 All RMSE values vs GCC `lstc --double` on the same grid.
@@ -268,29 +260,4 @@ GCC baseline for comparison:
     --problem example-problems/50x50x50x1.json \
     --alg lstc --params example-problems/params.json \
     --benchmark --double
-```
-
-
----
-
-## File Map
-
-```
-diffusion-benchmarking/
-├── src/
-│   ├── least_compute_thomas_solver.h      ← unchanged class interface
-│   ├── least_compute_thomas_solver.cpp    ← original; excluded from diffuse-taffo
-│   └── algorithms.cpp:44                 ← "lstc" → least_compute_thomas_solver<real_t>
-├── taffo-annotations/
-│   ├── least_compute_taffo.cpp            ← replacement for the above (clang-18, not taffo)
-│   ├── taffo_kernels_v11.cpp              ← annotated kernel (compiled with taffo)
-│   └── taffo_kernels_v11.h               ← declarations
-├── scratch/
-│   └── taffo_kernels_v11.o               ← TAFFO-compiled object, linked into diffuse-taffo
-├── example-problems/
-│   ├── 50x50x50x1.json                   ← test problem
-│   ├── params.json                        ← per_dimension benchmark/validate
-│   └── params_fullsolve.json             ← full_solve validate (multi-iteration)
-└── build-clang18/
-    └── diffuse-taffo                      ← final binary
 ```
