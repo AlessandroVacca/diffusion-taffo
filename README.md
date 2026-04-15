@@ -220,7 +220,7 @@ taffo -O3 -std=gnu++20 -fopenmp -march=native \
       -c taffo-annotations/taffo_kernels_v11.cpp \
       -o scratch/taffo_kernels_v11.o
 ```
-
+If you want to place the compiled kernels in another folder, you must account to update 'CMakeLists.txt' at line 198.
 
 ### Step 2 — Configure and build with CMake
 
