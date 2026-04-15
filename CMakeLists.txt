@@ -13,7 +13,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 option(USE_ASAN OFF)
 option(RISCV_CROSSCOMPILE OFF)
 option(NO_PAPI OFF)
-option(REDUCED_KERNELS_SET OFF)
 
 if(USE_ASAN)
   add_compile_options(-fsanitize=address -g)
@@ -167,4 +166,44 @@ elseif(NOT NO_PAPI)
       ${papi_BINARY_DIR}
       CACHE PATH "Path to installed packages" FORCE)
 
+endif()
+
+# ── diffuse-taffo ─────────────────────────────────────────────────────────────
+# Replaces least_compute_thomas_solver.cpp with the TAFFO-annotated wrapper
+# and links the TAFFO-compiled flat kernel object file.
+
+set(taffo_src_files ${src_files})
+list(REMOVE_ITEM taffo_src_files
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/least_compute_thomas_solver.cpp")
+list(APPEND taffo_src_files
+    "${CMAKE_CURRENT_SOURCE_DIR}/taffo-annotations/least_compute_taffo.cpp")
+
+add_executable(diffuse-taffo ${taffo_src_files})
+
+target_compile_options(
+    diffuse-taffo PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${DIFFUSE_CPP_COMPILE_OPTIONS}>)
+
+target_include_directories(
+    diffuse-taffo PRIVATE
+        ${noarr_structures_SOURCE_DIR}/include
+        ${argparse_SOURCE_DIR}/include
+        ${highway_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/taffo-annotations)
+
+target_link_libraries(diffuse-taffo
+    nlohmann_json::nlohmann_json
+    hwy
+    OpenMP::OpenMP_CXX
+    ${CMAKE_CURRENT_SOURCE_DIR}/scratch/taffo_kernels_v11.o)
+
+if(LAPACK_FOUND)
+    target_link_libraries(diffuse-taffo LAPACK::LAPACK)
+    target_compile_definitions(diffuse-taffo PRIVATE HAS_LAPACK)
+endif()
+
+if(PAPI_FOUND)
+    target_link_libraries(diffuse-taffo PkgConfig::PAPI)
+else()
+    target_compile_definitions(diffuse-taffo PRIVATE NO_PAPI)
 endif()
