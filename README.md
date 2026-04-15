@@ -30,9 +30,9 @@ This yields λ = D·dt/dx² = 0.25, giving the Thomas coefficients:
 - density range during forward sweep: [0, ~1220], annotated as [0, 1300]
 
 
-## What Was Adapted
+## What Was Changed
 
-### Files changed
+### Summary of changes
 
 | File | Change |
 |---|---|
@@ -44,15 +44,6 @@ This yields λ = D·dt/dx² = 0.25, giving the Thomas coefficients:
 
 `src/least_compute_thomas_solver.h`, all other `src/` files, and the rest of the build
 are unchanged.
-
-### What was kept identical
-
-- `precompute_values()` — copied verbatim into `least_compute_taffo.cpp:424–485`
-- `initialize()` — copied verbatim (`least_compute_taffo.cpp:487–496`)
-- `get_diagonal_layout()` — copied verbatim (`least_compute_taffo.cpp:498–502`)
-- `float` path of all `solve_*` methods — uses plain C++ flat-index equivalents of
-  the same algorithm; no TAFFO involvement
-- OMP structure of `solve()` — same single-region pattern with barriers between dimensions
 
 ### What was replaced
 
