@@ -7,6 +7,7 @@ The baseline for all comparisons is the original `lstc` solver compiled with GCC
 `-march=native`, and `--double` (double precision). The annotated version (`diffuse-taffo`)
 is compiled with clang-18 and always run with `--double`.
 
+All the experiments were ran on an Intel 6700K machine on Linux (Manjaro), using LLVM 18 with debug symbols and the latest TAFFO version at the time of writing, commit `1163ab393d6a1f1f985e91aa5ab187841353470a`.
 ## Problem explanation
 
 Test problem: `example-problems/50x50x50x1.json`
