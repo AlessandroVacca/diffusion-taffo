@@ -196,6 +196,10 @@ target_link_libraries(diffuse-taffo
     hwy
     OpenMP::OpenMP_CXX
     ${CMAKE_CURRENT_SOURCE_DIR}/scratch/taffo_kernels_v11.o)
+  
+if(REDUCED_KERNELS_SET)                            
+    target_compile_definitions(diffuse-taffo PRIVATE REDUCED_KERNELS_SET)
+endif() 
 
 if(LAPACK_FOUND)
     target_link_libraries(diffuse-taffo LAPACK::LAPACK)
