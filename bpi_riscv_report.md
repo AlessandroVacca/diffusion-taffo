@@ -35,7 +35,7 @@ Times in µs (median over 5 outer × 10 inner runs). "Total" = x + y + z sweep.
 
 RMSE vs `lstc --double` (double-precision ground truth) after N full ADI iterations.
 
-| Iterations | double (baseline) | float32 | TAFFO (x86) | TAFFO (RISC-V) |
+| Iterations | double (baseline, RISC-V) | float32 (RISC-V) | TAFFO (x86) | TAFFO (RISC-V) |
 |---|---|---|---|---|
 | 1   | ~1e-13 | 3.36e-05 | 5.59e-05 | 5.59e-05 |
 | 5   | ~1e-13 | 7.33e-05 | 6.36e-05 | 6.36e-05 |
