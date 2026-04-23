@@ -25,7 +25,7 @@ Times in µs (median over 5 outer × 10 inner runs). "Total" = x + y + z sweep.
 
 ### RISC-V (Banana Pi BPI-F3, Spacemit X60)
 
-| Solver | x (µs) | y (µs) | z (µs) | Total (µs) | vs GCC double |
+| Solver | x (µs) | y (µs) | z (µs) | Total (µs) | vs clang double (baseline) |
 |---|---|---|---|---|---|
 | baseline `lstc --double` | ~1158 | ~558 | ~1814 | ~3530 | 1.00× |
 | baseline `lstc` (float32) | ~1109 | ~552 | ~1742 | ~3403 | 1.04× |
