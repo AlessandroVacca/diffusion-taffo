@@ -56,12 +56,6 @@ Williams et al. [1] address the "model is limited to floating-point programs" fa
 the roofline can be applied to any operation count, replacing FLOPs with the relevant unit.
 Here, 5 algorithmic operations per element is used uniformly.
 
-For GCC these map to FP instructions (FMA + multiply); for TAFFO the Thomas loop uses
-integer arithmetic (`imul`/`shr` on x86, `fcvt.d.wu`/`fmul.d` on RISC-V after
-fixed-point conversion). The memory bandwidth ceiling applies to both.
-The compute ceilings (dep-chain, ILP) apply to GCC only — they were measured with
-FP FMA microbenchmarks and have no direct equivalent for TAFFO's integer path.
-
 ### Operational intensity
 
 | | Bytes/element (DRAM) | OI (FLOP/byte) |
@@ -73,10 +67,9 @@ OI is defined relative to DRAM traffic. At 50³×1 (~1 MB working set) the data 
 so DRAM traffic is negligible, this is the reason why those kernels are not
 plotted on the chart below.
 
-## 50³ × 1 — L3 bound
+## 50³ × 1, out of the Roofline analysis scope
 
-Working set ~1 MB, fits in L3. The DRAM roofline does not apply; effective bandwidth is L3
-bandwidth (not separately measured). Aggregate throughput = (3 × elements × 5 FLOPs) / total time.
+Working set ~1 MB, fits in L3. Effective bandwidth is L3 bandwidth (not separately measured). 
 
 | Solver | x86 (GFLOP/s) | RISC-V (GFLOP/s) |
 |---|---|---|
@@ -86,11 +79,10 @@ bandwidth (not separately measured). Aggregate throughput = (3 × elements × 5 
 GCC vectorizes across independent yz rows (AVX on x86, RVV on RISC-V). TAFFO Thomas loops
 are scalar on both platforms.
 
-
-## 200³ × 8 — DRAM bound
+## 200³ × 8, DRAM bound
 
 Working set 512 MB, exceeds L3. OI = 0.31 (GCC) and 0.21 (TAFFO) are both below the ILP ridge
-point (0.39 on x86, 0.46 on RISC-V) — kernels are in the memory-bound region.
+point (0.39 on x86, 0.46 on RISC-V), kernels are in the memory-bound region.
 
 Predicted ceiling = OI × Peak BW:
 - GCC x86: 0.31 × 21.5 = 6.67 GFLOP/s
@@ -100,7 +92,7 @@ Predicted ceiling = OI × Peak BW:
 
 Aggregate throughput (all three sweeps combined):
 
-| Solver | x86 (GFLOP/s) | Ceiling | Efficiency | RISC-V (GFLOP/s) | Ceiling | Efficiency |
+| Solver | x86 (GOP/s) | Ceiling | Efficiency | RISC-V (GOP/s) | Ceiling | Efficiency |
 |---|---|---|---|---|---|---|
 | GCC double | 3.93 | 6.67 | 59% | 0.67 | 1.44 | 47% |
 | TAFFO | 0.94 | 4.52 | 21% | 0.11 | 0.97 | 11% |
@@ -109,18 +101,8 @@ Aggregate throughput (all three sweeps combined):
 
 GCC sits between the dep-chain and ILP ceilings on both platforms: it vectorizes across
 independent yz rows (AVX / RVV), exceeding the scalar dep-chain ceiling. TAFFO falls well
-below the dep-chain ceiling despite scalar Thomas arithmetic — the bottleneck at this scale is
-the strided copy-in (stride ny×nz×8 = 320 KB per element), which generates TLB misses on
-every access and drives effective bandwidth far below peak.
-
-
-## Summary
-
-| | x86 50³ | x86 200³ | RISC-V 50³ | RISC-V 200³ |
-|---|---|---|---|---|
-| Regime | L3-bound | DRAM bound | L3-bound | DRAM bound |
-| GCC efficiency | — | 47–94% of roofline | — | 36–58% |
-| TAFFO vs GCC double | 1.19× faster | 4.2× slower | 0.89× | 6.3× slower |
+below the dep-chain ceiling despite scalar Thomas arithmetic, as clearly the bottleneck at this scale is
+the strided copy-in, which generates numerous cache misses on every access and drives effective bandwidth far below peak.
 
 
 ## References
