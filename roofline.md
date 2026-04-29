@@ -1,7 +1,7 @@
 # Roofline Analysis — lstc Thomas Solver
 
 The Roofline model [1,2] gives an upper bound on attainable performance as a function of a kernel's
-operational intensity (OI) — floating-point operations per byte of DRAM traffic after cache filtering.
+operational intensity (OI),floating-point operations per byte of DRAM traffic after cache filtering.
 The bound is:
 
 ```
@@ -11,10 +11,9 @@ Attainable GFlops/s = min(Peak FP performance, Peak DRAM BW × OI)
 This yields the characteristic shape on a log-log plot: a diagonal slope (memory bound) that
 flattens into a horizontal ceiling (compute bound) at the ridge point. The model provides an upper
 bound; identifying the specific bottleneck within that regime requires profiling tools [3,4].
-For RISC-V platforms, PMU counter availability varies by implementation — the SpacemiT X60 used
+For RISC-V platforms, PMU counter availability varies by implementation and the SpacemiT X60 used
 here has limited hardware counter support [5].
 
----
 
 ## Machine characterization
 
@@ -30,27 +29,21 @@ and 4-way ILP variant (throughput-bound), both `-O3 -ffast-math`.
 | Peak FLOP/s (4-way ILP) | 8.35 GFLOP/s | 2.13 GFLOP/s |
 | Compiler (baseline) | GCC 14, `-march=native` | GCC 13, `-march=rv64imafdcv_zicsr_zifencei` |
 
-The dep-chain ceiling applies to loops with a loop-carried dependency; the Thomas sweep has one
-along each sweep direction.
-
----
-
 ## Kernel characterization
 
 ### Data layout
 
-`lstc` stores density as `dens[s*nx*ny*nz + x*ny*nz + y*nz + z]` — z innermost, s outermost.
+`lstc` stores density as `dens[s*nx*ny*nz + x*ny*nz + y*nz + z]`.
 
-| Sweep | Stride per element | Access character |
-|---|---|---|
-| z | 1 double | Sequential |
-| y | nz doubles | Strided |
-| x | ny×nz doubles (320 KB at 200³×8) | Heavily strided |
+| Sweep | Stride per element |
+|---|---|
+| z | 1 double | 
+| y | nz doubles | 
+| x | ny×nz doubles (320 KB at 200³×8) | 
 
 ### FLOPs per element
 
 `lstc` stores precomputed reciprocals in `b[]` and `e[]` before the benchmark loop.
-The hot Thomas sweep contains no divisions (confirmed by disassembly of the GCC binary).
 
 ```
 Forward:  d[i] = d[i] + e[i-1] * d[i-1]      1 FMA  = 2 FLOPs
@@ -58,8 +51,7 @@ Backward: d[i] = (d[i] + c * d[i+1]) * b[i]  1 FMA + 1 MUL = 3 FLOPs
 Total: 5 FLOPs per element
 ```
 
-For GCC, these are FP operations. For TAFFO, the Thomas loop uses integer arithmetic
-(`imul` + `shr` on x86, `fcvt.d.wu` + `fmul.d` on RISC-V) — throughput is reported as
+Assumption: For GCC, these are FP operations. For TAFFO, the Thomas loop uses integer arithmetic, throughput is reported as
 (elements × 5) / time in FP-equivalent units; the FP compute ceilings do not strictly apply.
 
 ### Operational intensity
@@ -70,10 +62,8 @@ For GCC, these are FP operations. For TAFFO, the Thomas loop uses integer arithm
 | TAFFO | 24 (8 read + 4 copy-in write + 4 copy-out read + 8 write) | 0.21 |
 
 OI is defined relative to DRAM traffic. At 50³×1 (~1 MB working set) the data fits in L3 cache,
-so DRAM traffic is negligible — the DRAM BW roofline does not apply and those kernels are not
+so DRAM traffic is negligible, this is the reason why those kernels are not
 plotted on the chart below.
-
----
 
 ## 50³ × 1 — L3 bound
 
@@ -88,7 +78,6 @@ bandwidth (not separately measured). Aggregate throughput = (3 × elements × 5 
 GCC vectorizes across independent yz rows (AVX on x86, RVV on RISC-V). TAFFO Thomas loops
 are scalar on both platforms.
 
----
 
 ## 200³ × 8 — DRAM bound
 
@@ -116,7 +105,6 @@ below the dep-chain ceiling despite scalar Thomas arithmetic — the bottleneck 
 the strided copy-in (stride ny×nz×8 = 320 KB per element), which generates TLB misses on
 every access and drives effective bandwidth far below peak.
 
----
 
 ## Summary
 
@@ -126,7 +114,6 @@ every access and drives effective bandwidth far below peak.
 | GCC efficiency | — | 47–94% of roofline | — | 36–58% |
 | TAFFO vs GCC double | 1.19× faster | 4.2× slower | 0.89× | 6.3× slower |
 
----
 
 ## References
 
