@@ -41,18 +41,26 @@ and 4-way ILP variant (throughput-bound), both `-O3 -ffast-math`.
 | y | nz doubles | 
 | x | ny×nz doubles (320 KB at 200³×8) | 
 
-### FLOPs per element
+### Operations per element
 
 `lstc` stores precomputed reciprocals in `b[]` and `e[]` before the benchmark loop.
 
 ```
-Forward:  d[i] = d[i] + e[i-1] * d[i-1]      1 FMA  = 2 FLOPs
-Backward: d[i] = (d[i] + c * d[i+1]) * b[i]  1 FMA + 1 MUL = 3 FLOPs
-Total: 5 FLOPs per element
+Forward:  d[i] = d[i] + e[i-1] * d[i-1]      1 FMA  = 2 ops
+Backward: d[i] = (d[i] + c * d[i+1]) * b[i]  1 FMA + 1 MUL = 3 ops
+Total: 5 ops per element
 ```
 
-Assumption: For GCC, these are FP operations. For TAFFO, the Thomas loop uses integer arithmetic, throughput is reported as
-(elements × 5) / time in FP-equivalent units; the FP compute ceilings do not strictly apply.
+Both GCC and TAFFO solve the same Thomas problem with the same number of arithmetic steps.
+Williams et al. [1] address the "model is limited to floating-point programs" fallacy directly:
+the roofline can be applied to any operation count, replacing FLOPs with the relevant unit.
+Here, 5 algorithmic operations per element is used uniformly.
+
+For GCC these map to FP instructions (FMA + multiply); for TAFFO the Thomas loop uses
+integer arithmetic (`imul`/`shr` on x86, `fcvt.d.wu`/`fmul.d` on RISC-V after
+fixed-point conversion). The memory bandwidth ceiling applies to both.
+The compute ceilings (dep-chain, ILP) apply to GCC only — they were measured with
+FP FMA microbenchmarks and have no direct equivalent for TAFFO's integer path.
 
 ### Operational intensity
 
