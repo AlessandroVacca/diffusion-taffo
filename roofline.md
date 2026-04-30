@@ -25,8 +25,8 @@ and 4-way ILP variant (throughput-bound), both `-O3 -ffast-math`.
 | | x86 (i7-6700K) | RISC-V (Spacemit X60) |
 |---|---|---|
 | Peak DRAM bandwidth | 21.5 GB/s | 4.64 GB/s |
-| Peak FLOP/s (dep-chain) | 2.09 GFLOP/s | 0.64 GFLOP/s |
-| Peak FLOP/s (4-way ILP) | 8.35 GFLOP/s | 2.13 GFLOP/s |
+| Peak FLOP/s (dep-chain) | 2.09 GOP/s | 0.64 GOP/s |
+| Peak FLOP/s (4-way ILP) | 8.35 GOP/s | 2.13 GOP/s |
 | Compiler (baseline) | GCC 14, `-march=native` | GCC 13, `-march=rv64imafdcv_zicsr_zifencei` |
 
 ## Kernel characterization
@@ -58,7 +58,7 @@ Here, 5 algorithmic operations per element is used uniformly.
 
 ### Operational intensity
 
-| | Bytes/element (DRAM) | OI (FLOP/byte) |
+| | Bytes/element (DRAM) | OI (OP/byte) |
 |---|---|---|
 | GCC double | 16 (8 read + 8 write) | 0.31 |
 | TAFFO | 24 (8 read + 4 copy-in write + 4 copy-out read + 8 write) | 0.21 |
@@ -71,7 +71,7 @@ plotted on the chart below.
 
 Working set ~1 MB, fits in L3. Effective bandwidth is L3 bandwidth (not separately measured). 
 
-| Solver | x86 (GFLOP/s) | RISC-V (GFLOP/s) |
+| Solver | x86 (GOP/s) | RISC-V (GOP/s) |
 |---|---|---|
 | GCC double | 4.66 | 0.53 |
 | TAFFO | 5.53 | 0.47 |
@@ -86,9 +86,9 @@ point (0.39 on x86, 0.46 on RISC-V), kernels are in the memory-bound region.
 
 Predicted ceiling = OI × Peak BW:
 - GCC x86: 0.31 × 21.5 = 6.67 GFLOP/s
-- TAFFO x86: 0.21 × 21.5 = 4.52 GFLOP/s
+- TAFFO x86: 0.21 × 21.5 = 4.52 GOP/s
 - GCC RISC-V: 0.31 × 4.64 = 1.44 GFLOP/s
-- TAFFO RISC-V: 0.21 × 4.64 = 0.97 GFLOP/s
+- TAFFO RISC-V: 0.21 × 4.64 = 0.97 GOP/s
 
 Aggregate throughput (all three sweeps combined):
 
